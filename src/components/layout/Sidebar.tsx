@@ -73,6 +73,11 @@ const FinanceIcon = () => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
   </svg>
 )
+const RefundIcon = () => (
+  <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+  </svg>
+)
 const LogoutIcon = () => (
   <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
@@ -91,13 +96,14 @@ const NAV_CONFIG: Record<string, NavItem[]> = {
     { label: 'Penutupan Akun',   href: '/dashboard/member/resignations',  icon: <ResignIcon />,    group: 'AKUN' },
   ],
   STAFF: [
-    { label: 'Dasbor',                 href: '/dashboard/staff',               icon: <DashboardIcon />,    group: 'RINGKASAN' },
-    { label: 'Verifikasi Anggota',     href: '/dashboard/staff/verification',  icon: <VerificationIcon />, group: 'ANGGOTA & SIMPANAN' },
-    { label: 'Verifikasi Simpanan',    href: '/dashboard/staff/verifications/savings',       icon: <SavingsVerifIcon />, group: 'ANGGOTA & SIMPANAN' },
-    { label: 'Permintaan Penarikan',   href: '/dashboard/staff/withdrawals',   icon: <WithdrawalIcon />,   group: 'ANGGOTA & SIMPANAN' },
-    { label: 'Dasbor Pinjaman',        href: '/dashboard/staff/loans',         icon: <LoanApprovalIcon />, group: 'PINJAMAN' },
-    { label: 'Pencairan',              href: '/dashboard/staff/disbursement',  icon: <DisburseIcon />,     group: 'PINJAMAN' },
-    { label: 'Pembayaran Angsuran',    href: '/dashboard/staff/installments',  icon: <InstallmentIcon />,  group: 'PINJAMAN' },
+    { label: 'Dasbor',                 href: '/dashboard/staff',                        icon: <DashboardIcon />,    group: 'RINGKASAN' },
+    { label: 'Verifikasi Anggota',     href: '/dashboard/staff/verification',           icon: <VerificationIcon />, group: 'ANGGOTA & SIMPANAN' },
+    { label: 'Verifikasi Simpanan',    href: '/dashboard/staff/verifications/savings',  icon: <SavingsVerifIcon />, group: 'ANGGOTA & SIMPANAN' },
+    { label: 'Permintaan Penarikan',   href: '/dashboard/staff/withdrawals',            icon: <WithdrawalIcon />,   group: 'ANGGOTA & SIMPANAN' },
+    { label: 'Dasbor Pinjaman',        href: '/dashboard/staff/loans',                 icon: <LoanApprovalIcon />, group: 'PINJAMAN' },
+    { label: 'Pencairan',              href: '/dashboard/staff/disbursement',           icon: <DisburseIcon />,     group: 'PINJAMAN' },
+    { label: 'Pembayaran Angsuran',    href: '/dashboard/staff/installments',           icon: <InstallmentIcon />,  group: 'PINJAMAN' },
+    { label: 'Pengembalian Dana',      href: '/dashboard/staff/refunds',               icon: <RefundIcon />,       group: 'PINJAMAN' },
   ],
   MANAGER: [
     { label: 'Dasbor',                 href: '/dashboard/manager',               icon: <DashboardIcon />,    group: 'RINGKASAN' },
@@ -140,7 +146,6 @@ export default function Sidebar({ role, userName = 'User', userID, avatarUrl }: 
     groups[g].push(item)
   })
 
-  // Active check: savings detail pages should also highlight "Savings Verification"
   const isActive = (href: string) => {
     if (href === '/dashboard/staff/verifications/savings') {
       return pathname === href || pathname.startsWith('/dashboard/staff/verifications/savings/')
@@ -153,6 +158,9 @@ export default function Sidebar({ role, userName = 'User', userID, avatarUrl }: 
     }
     if (href === '/dashboard/staff/installments') {
       return pathname === href || pathname.startsWith('/dashboard/staff/installments/')
+    }
+    if (href === '/dashboard/staff/refunds') {
+      return pathname === href || pathname.startsWith('/dashboard/staff/refunds/')
     }
     return pathname === href
   }
@@ -223,7 +231,6 @@ export default function Sidebar({ role, userName = 'User', userID, avatarUrl }: 
         {/* User + Logout */}
         <div className="px-3 py-4" style={{ borderTop: '1px solid #F1F5F9' }}>
           <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl" style={{ backgroundColor: '#FAFAFA' }}>
-            {/* Avatar */}
             <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center"
               style={{ backgroundColor: '#E5E7EB' }}>
               {avatarUrl ? (
@@ -234,7 +241,6 @@ export default function Sidebar({ role, userName = 'User', userID, avatarUrl }: 
                 </svg>
               )}
             </div>
-            {/* Name */}
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold truncate" style={{ color: '#242F43', fontFamily: 'Inter, sans-serif' }}>
                 {userName}
@@ -245,7 +251,6 @@ export default function Sidebar({ role, userName = 'User', userID, avatarUrl }: 
                 </p>
               )}
             </div>
-            {/* Logout button */}
             <button
               onClick={() => setLogoutOpen(true)}
               className="flex-shrink-0 p-1.5 rounded-lg transition-colors"
