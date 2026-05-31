@@ -182,7 +182,7 @@ export default function ManagerCreditPage() {
   }
 
   return (
-    <DashboardLayout role="MANAGER">
+    <DashboardLayout role="MANAGER" userName="Manajer">
       <DashboardHeader variant="default" title="Pemantauan Kredit" />
 
       <main className="flex-1 p-8 space-y-6">
